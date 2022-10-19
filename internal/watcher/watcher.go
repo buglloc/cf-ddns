@@ -13,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/buglloc/cf-ddns/internal/xcf"
+	"github.com/buglloc/cf-ddns/internal/xhttp"
 )
 
 type Watcher struct {
@@ -35,7 +36,8 @@ func NewWatcher(opts ...Option) (*Watcher, error) {
 	out := &Watcher{
 		httpc: resty.New().
 			SetRedirectPolicy(resty.NoRedirectPolicy()).
-			SetRetryCount(3),
+			SetRetryCount(3).
+			SetTLSClientConfig(xhttp.NewTLSClientConfig()),
 		proxied:   false,
 		useIPv4:   true,
 		useIPv6:   false,

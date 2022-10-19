@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/buglloc/cf-ddns/internal/watcher"
+	"github.com/buglloc/cf-ddns/internal/xhttp"
 )
 
 var watchArgs = struct {
@@ -41,7 +42,8 @@ var watchCmd = &cobra.Command{
 			return errors.New("no env[CF_API_TOKEN]")
 		}
 
-		cfc, err := cloudflare.NewWithAPIToken(cfToken)
+		httpc := xhttp.NewHTTPClient()
+		cfc, err := cloudflare.NewWithAPIToken(cfToken, cloudflare.HTTPClient(httpc))
 		if err != nil {
 			return fmt.Errorf("unable to create cloudflare client: %w", err)
 		}
