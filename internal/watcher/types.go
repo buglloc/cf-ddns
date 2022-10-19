@@ -27,6 +27,7 @@ func (rr DNSRecord) IsEqual(o DNSRecord) bool {
 func (rr DNSRecord) MarshalZerologObject(e *zerolog.Event) {
 	e.
 		Str("id", rr.ID).
+		Str("name", rr.Name).
 		Str("type", rr.Type).
 		Str("content", rr.Content).
 		Int("ttl", rr.TTL).
