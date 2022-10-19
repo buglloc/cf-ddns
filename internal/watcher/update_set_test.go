@@ -197,7 +197,9 @@ func TestBuildUpdateSet(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			actual := watcher.BuildUpdateSet(tc.actualRecords, tc.expectedRecords)
-			require.Equal(t, tc.expectedSet, actual)
+			require.ElementsMatch(t, tc.expectedSet.ToUpdate, actual.ToUpdate)
+			require.ElementsMatch(t, tc.expectedSet.ToAdd, actual.ToAdd)
+			require.ElementsMatch(t, tc.expectedSet.ToDelete, actual.ToDelete)
 		})
 	}
 }
