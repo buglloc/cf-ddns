@@ -1,4 +1,7 @@
+---
 name: CI
+
+# Controls when the workflow will run
 on:
   push:
     branches:
@@ -15,15 +18,19 @@ jobs:
       pull-requests: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # Get the repositery's code
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-go@v3
+      - name: Set up Golang
+        uses: actions/setup-go@v3
         with:
           go-version: '1.19.x'
           check-latest: true
           cache: true
 
-      - uses: golangci/golangci-lint-action@v3.2.0
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3.2.0
         with:
           version: latest
           args: --verbose
@@ -38,11 +45,15 @@ jobs:
     name: 'tests on ${{ matrix.platform }} | 1.${{ matrix.go }}.x'
     runs-on: ${{ matrix.platform }}-latest
     steps:
+      # Get the repositery's code
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-go@v3
+      - name: Set up Golang
+        uses: actions/setup-go@v3
         with:
           go-version: '1.${{ matrix.go }}.x'
           cache: true
-      - run: go clean -testcache && go test -race -cover -covermode=atomic ./...
+
+      - name: Run tests
+        run: go clean -testcache && go test -race -cover -covermode=atomic ./...
