@@ -6,6 +6,10 @@ type UpdateSet struct {
 	ToDelete []DNSRecord
 }
 
+func (u UpdateSet) IsEmpty() bool {
+	return len(u.ToAdd) == 0 && len(u.ToUpdate) == 0 && len(u.ToDelete) == 0
+}
+
 func BuildUpdateSet(actual, expected []DNSRecord) UpdateSet {
 	expectedRRs := make(map[string]DNSRecord, len(expected))
 	for _, rr := range expected {

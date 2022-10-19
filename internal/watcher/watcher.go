@@ -73,10 +73,12 @@ func NewWatcher(opts ...Option) (*Watcher, error) {
 func (w *Watcher) Watch() error {
 	defer close(w.closed)
 
+	log.Info().Msg("starts initial sync")
 	if err := w.Sync(w.ctx); err != nil {
 		return fmt.Errorf("initial sync failed: %w", err)
 	}
 
+	log.Info().Msg("synced")
 	ticker := time.NewTicker(time.Duration(w.ttl) * time.Second)
 	for {
 		select {
@@ -87,7 +89,10 @@ func (w *Watcher) Watch() error {
 			log.Info().Msg("starts syncing")
 			if err := w.Sync(w.ctx); err != nil {
 				log.Error().Err(err).Msg("sync failed")
+				continue
 			}
+
+			log.Info().Msg("synced")
 		}
 	}
 }
@@ -106,6 +111,11 @@ func (w *Watcher) Sync(ctx context.Context) error {
 	log.Info().Array("records", loggableDNSRecords(actualRecs)).Msg("collected actual records")
 
 	updateSet := BuildUpdateSet(actualRecs, expectedRecs)
+	if updateSet.IsEmpty() {
+		log.Info().Msg("records are up to date, nothing to do")
+		return nil
+	}
+
 	w.processDeletes(ctx, updateSet.ToDelete...)
 	w.processUpdates(ctx, updateSet.ToUpdate...)
 	w.processAdds(ctx, updateSet.ToAdd...)
