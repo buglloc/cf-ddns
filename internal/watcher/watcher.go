@@ -5,11 +5,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/go-resty/resty/v2"
-
 	"github.com/rs/zerolog/log"
 
 	"github.com/buglloc/cf-ddns/internal/xcf"
@@ -129,7 +129,7 @@ func (w *Watcher) processDeletes(ctx context.Context, recs ...DNSRecord) {
 			continue
 		}
 
-		if err := w.cfc.DeleteDNSRecord(ctx, w.zoneID, rr.ID); err != nil {
+		if err := w.cfc.DeleteDNSRecord(ctx, cloudflare.ZoneIdentifier(w.zoneID), rr.ID); err != nil {
 			log.Error().Object("rr", rr).Err(err).Msg("unable to delete record from CF")
 			continue
 		}
@@ -145,7 +145,17 @@ func (w *Watcher) processUpdates(ctx context.Context, recs ...DNSRecord) {
 			continue
 		}
 
-		if err := w.cfc.UpdateDNSRecord(ctx, w.zoneID, rr.ID, rr.DNSRecord); err != nil {
+		record := cloudflare.UpdateDNSRecordParams{
+			ID:       rr.ID,
+			Name:     rr.Name,
+			Type:     strings.ToUpper(rr.Type),
+			Content:  rr.Content,
+			TTL:      rr.TTL,
+			Proxied:  rr.Proxied,
+			Priority: rr.Priority,
+		}
+		err := w.cfc.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(w.zoneID), record)
+		if err != nil {
 			log.Error().Object("rr", rr).Err(err).Msg("unable to update record in CF")
 			continue
 		}
@@ -156,7 +166,15 @@ func (w *Watcher) processUpdates(ctx context.Context, recs ...DNSRecord) {
 
 func (w *Watcher) processAdds(ctx context.Context, recs ...DNSRecord) {
 	for _, rr := range recs {
-		rsp, err := w.cfc.CreateDNSRecord(ctx, w.zoneID, rr.DNSRecord)
+		record := cloudflare.CreateDNSRecordParams{
+			Name:     rr.Name,
+			Type:     strings.ToUpper(rr.Type),
+			Content:  rr.Content,
+			TTL:      rr.TTL,
+			Proxied:  rr.Proxied,
+			Priority: rr.Priority,
+		}
+		rsp, err := w.cfc.CreateDNSRecord(ctx, cloudflare.ZoneIdentifier(w.zoneID), record)
 		if err != nil {
 			log.Error().Object("rr", rr).Err(err).Msg("unable to update record in CF")
 			continue
@@ -167,7 +185,11 @@ func (w *Watcher) processAdds(ctx context.Context, recs ...DNSRecord) {
 }
 
 func (w *Watcher) actualRecords(ctx context.Context) ([]DNSRecord, error) {
-	cfRecs, err := w.cfc.DNSRecords(ctx, w.zoneID, cloudflare.DNSRecord{Name: w.dnsName})
+	cfRecs, _, err := w.cfc.ListDNSRecords(
+		ctx,
+		cloudflare.ZoneIdentifier(w.zoneID),
+		cloudflare.ListDNSRecordsParams{Name: w.dnsName},
+	)
 	if err != nil {
 		return nil, fmt.Errorf("unable to get actual DNS records: %w", err)
 	}
