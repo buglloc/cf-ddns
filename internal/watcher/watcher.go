@@ -154,13 +154,16 @@ func (w *Watcher) processUpdates(ctx context.Context, recs ...DNSRecord) {
 			Proxied:  rr.Proxied,
 			Priority: rr.Priority,
 		}
-		err := w.cfc.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(w.zoneID), record)
+		remoteRR, err := w.cfc.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(w.zoneID), record)
 		if err != nil {
 			log.Error().Object("rr", rr).Err(err).Msg("unable to update record in CF")
 			continue
 		}
 
-		log.Info().Object("rr", rr).Msg("record updated")
+		log.Info().
+			Object("rr", rr).
+			Object("remote_rr", DNSRecord{remoteRR}).
+			Msg("record updated")
 	}
 }
 
@@ -176,11 +179,16 @@ func (w *Watcher) processAdds(ctx context.Context, recs ...DNSRecord) {
 		}
 		rsp, err := w.cfc.CreateDNSRecord(ctx, cloudflare.ZoneIdentifier(w.zoneID), record)
 		if err != nil {
-			log.Error().Object("rr", rr).Err(err).Msg("unable to update record in CF")
+			log.Error().
+				Object("rr", rr).
+				Err(err).
+				Msg("unable to update record in CF")
 			continue
 		}
 
-		log.Info().Object("rr", DNSRecord{rsp.Result}).Msg("record added")
+		log.Info().
+			Object("rr", DNSRecord{rsp}).
+			Msg("record added")
 	}
 }
 
