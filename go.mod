@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/buglloc/certifi v0.9.1
-	github.com/cloudflare/cloudflare-go v0.68.0
+	github.com/cloudflare/cloudflare-go v0.69.0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/rs/zerolog v1.29.1
 	github.com/spf13/cobra v1.7.0
@@ -15,7 +15,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.2 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
