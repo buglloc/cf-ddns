@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/buglloc/certifi v0.9.1
-	github.com/cloudflare/cloudflare-go v0.71.0
+	github.com/cloudflare/cloudflare-go v0.72.0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/rs/zerolog v1.29.1
 	github.com/spf13/cobra v1.7.0
