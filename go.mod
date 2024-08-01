@@ -3,7 +3,7 @@ module github.com/buglloc/cf-ddns
 go 1.19
 
 require (
-	github.com/buglloc/certifi v0.9.2
+	github.com/buglloc/certifi v0.9.3
 	github.com/cloudflare/cloudflare-go v0.101.0
 	github.com/go-resty/resty/v2 v2.13.1
 	github.com/rs/zerolog v1.33.0
