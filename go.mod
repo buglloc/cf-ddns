@@ -4,11 +4,11 @@ go 1.19
 
 require (
 	github.com/buglloc/certifi v0.9.3
-	github.com/cloudflare/cloudflare-go v0.110.0
+	github.com/cloudflare/cloudflare-go v0.111.0
 	github.com/go-resty/resty/v2 v2.16.1
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/cobra v1.8.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
