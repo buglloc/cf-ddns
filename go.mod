@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/buglloc/certifi v0.9.3
-	github.com/cloudflare/cloudflare-go v0.110.0
+	github.com/cloudflare/cloudflare-go v0.113.0
 	github.com/go-resty/resty/v2 v2.16.3
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/cobra v1.8.1
@@ -13,7 +13,7 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/goccy/go-json v0.10.3 // indirect
+	github.com/goccy/go-json v0.10.4 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
