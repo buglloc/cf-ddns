@@ -8,7 +8,7 @@ require (
 	github.com/buglloc/certifi v0.9.4
 	github.com/cloudflare/cloudflare-go v0.114.0
 	github.com/go-resty/resty/v2 v2.16.5
-	github.com/rs/zerolog v1.33.0
+	github.com/rs/zerolog v1.34.0
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.10.0
 )
