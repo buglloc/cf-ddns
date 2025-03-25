@@ -5,7 +5,7 @@ go 1.23
 toolchain go1.23.4
 
 require (
-	github.com/buglloc/certifi v0.9.3
+	github.com/buglloc/certifi v0.9.4
 	github.com/cloudflare/cloudflare-go v0.114.0
 	github.com/go-resty/resty/v2 v2.16.5
 	github.com/rs/zerolog v1.33.0
