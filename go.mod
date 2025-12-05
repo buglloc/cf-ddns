@@ -9,7 +9,7 @@ require (
 	github.com/cloudflare/cloudflare-go v0.116.0
 	github.com/go-resty/resty/v2 v2.17.0
 	github.com/rs/zerolog v1.34.0
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 )
 
